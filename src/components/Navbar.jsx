@@ -3,9 +3,49 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
 
+const AudioWaveIcon = ({ isPlaying }) => {
+  const bars = [
+    { base: 4, peak: 10 },
+    { base: 6, peak: 16 },
+    { base: 8, peak: 20 },
+    { base: 6, peak: 16 },
+    { base: 4, peak: 10 },
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: '3px', alignItems: 'center', justifyContent: 'center', height: '24px' }}>
+      {bars.map((bar, i) => (
+        <motion.div
+          key={i}
+          animate={{ height: isPlaying ? [bar.base, bar.peak, bar.base] : bar.base }}
+          transition={{
+            duration: 0.8,
+            repeat: isPlaying ? Infinity : 0,
+            ease: "easeInOut",
+            delay: i * 0.1,
+          }}
+          style={{ width: '3px', backgroundColor: 'currentColor', borderRadius: '2px' }}
+        />
+      ))}
+    </div>
+  );
+};
+
 const Navbar = ({ activeSection, setActiveSection }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = React.useRef(null);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.error(e));
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,21 +55,21 @@ const Navbar = ({ activeSection, setActiveSection }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   const navLinks = [
-    { name: 'Home',           href: '#home',           id: 'home' },
-    { name: 'About',          href: '#about',          id: 'about' },
-    { name: 'Resume',         href: '#resume',         id: 'resume' },
-    { name: 'Skills',         href: '#skills',         id: 'skills' },
-    { name: 'Projects',       href: '#projects',       id: 'projects' },
+    { name: 'Home', href: '#home', id: 'home' },
+    { name: 'About', href: '#about', id: 'about' },
+    { name: 'Resume', href: '#resume', id: 'resume' },
+    { name: 'Skills', href: '#skills', id: 'skills' },
+    { name: 'Projects', href: '#projects', id: 'projects' },
     { name: 'Certifications', href: '#certifications', id: 'certifications' },
-    { name: 'Achievements',   href: '#achievements',   id: 'achievements' },
-    { name: 'Experience',     href: '#experience',     id: 'experience' },
+    { name: 'Achievements', href: '#achievements', id: 'achievements' },
+    { name: 'Experience', href: '#experience', id: 'experience' },
   ];
 
   const handleNavClick = (e, id) => {
     e.preventDefault();
     setActiveSection(id);
     setIsOpen(false);
-    
+
     // Smooth scroll directly to the section on the page
     const element = document.getElementById(id);
     if (element) {
@@ -40,6 +80,9 @@ const Navbar = ({ activeSection, setActiveSection }) => {
 
   return (
     <>
+      {/* Background Music Audio Element */}
+      <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop />
+
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -50,11 +93,12 @@ const Navbar = ({ activeSection, setActiveSection }) => {
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 100,
-          width: 'max-content', // Only take up as much space as needed
+          width: 'max-content', 
+          maxWidth: '96vw', // Prevents it from ever overflowing the viewport width
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '0.75rem 1.5rem',
+          padding: '0.5rem 1rem', // Reduced padding
           borderRadius: scrolled ? '100px' : '18px',
           background: scrolled ? 'rgba(2, 8, 23, 0.88)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
@@ -68,7 +112,7 @@ const Navbar = ({ activeSection, setActiveSection }) => {
         <a href="#home" onClick={(e) => handleNavClick(e, 'home')} style={{
           fontFamily: 'var(--font-heading)',
           fontWeight: 800,
-          fontSize: '1.25rem',
+          fontSize: '1.2rem',
           color: 'var(--text-main)',
           letterSpacing: '-0.02em',
           display: 'flex',
@@ -76,57 +120,79 @@ const Navbar = ({ activeSection, setActiveSection }) => {
           gap: '4px',
           cursor: 'pointer',
           textDecoration: 'none',
-          marginRight: '2rem' // Space before links
+          marginRight: '1rem' // Reduced space before links to save width
         }}>
           <span style={{ color: 'var(--neon-blue)' }}>&lt;</span>
           {portfolioData.personal.name.split(' ')[0]}
           <span style={{ color: 'var(--neon-blue)' }}>/&gt;</span>
         </a>
 
-        <ul className="desk-nav" style={{
-          display: 'flex', gap: '0.25rem', listStyle: 'none', margin: 0, padding: 0
-        }}>
-          {navLinks.map(link => {
-            const active = activeSection === link.id;
-            return (
-              <li key={link.name} style={{ position: 'relative' }}>
-                {active && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    style={{
-                      position: 'absolute', inset: 0,
-                      background: 'rgba(0, 212, 255, 0.08)',
-                      border: '1px solid rgba(0, 212, 255, 0.15)',
-                      borderRadius: '100px', zIndex: 0,
-                    }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                  />
-                )}
-                <a href={link.href} onClick={(e) => handleNavClick(e, link.id)} style={{
-                  display: 'block', padding: '0.4rem 0.6rem',
-                  color: active ? 'var(--neon-blue)' : 'var(--text-muted)',
-                  fontSize: '0.8rem', fontWeight: active ? 600 : 400,
-                  position: 'relative', zIndex: 1, transition: 'color 0.2s', whiteSpace: 'nowrap', textDecoration: 'none', cursor: 'pointer'
-                }}
-                onMouseEnter={e => { if (!active) e.target.style.color = 'var(--text-main)'; }}
-                onMouseLeave={e => { if (!active) e.target.style.color = 'var(--text-muted)'; }}
-                >
-                  {link.name}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <ul className="desk-nav" style={{
+            display: 'flex', gap: '0.15rem', listStyle: 'none', margin: 0, padding: 0
+          }}>
+            {navLinks.map(link => {
+              const active = activeSection === link.id;
+              return (
+                <li key={link.name} style={{ position: 'relative' }}>
+                  {active && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      style={{
+                        position: 'absolute', inset: 0,
+                        background: 'rgba(0, 212, 255, 0.08)',
+                        border: '1px solid rgba(0, 212, 255, 0.15)',
+                        borderRadius: '100px', zIndex: 0,
+                      }}
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <a href={link.href} onClick={(e) => handleNavClick(e, link.id)} style={{
+                    display: 'block', padding: '0.35rem 0.5rem', // Reduced link padding
+                    color: active ? 'var(--neon-blue)' : 'var(--text-muted)',
+                    fontSize: '0.8rem', fontWeight: active ? 600 : 400,
+                    position: 'relative', zIndex: 1, transition: 'color 0.2s', whiteSpace: 'nowrap', textDecoration: 'none', cursor: 'pointer'
+                  }}
+                  onMouseEnter={e => { if (!active) e.target.style.color = 'var(--text-main)'; }}
+                  onMouseLeave={e => { if (!active) e.target.style.color = 'var(--text-muted)'; }}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
+          <button
+            onClick={toggleMusic}
+            aria-label="Toggle Music"
+            title="Play/Pause Background Music"
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'rgba(0, 212, 255, 0.08)',
+              border: '1px solid rgba(0, 212, 255, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--neon-blue)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              padding: 0
+            }}
+          >
+            <AudioWaveIcon isPlaying={isPlaying} />
+          </button>
 
-
-        {/* Mobile burger */}
-        <button className="mob-btn" onClick={() => setIsOpen(!isOpen)} style={{
-          background: 'transparent', padding: '0.5rem', border: 'none',
-          display: 'none', color: 'var(--text-main)', cursor: 'pointer',
-        }}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          {/* Mobile burger */}
+          <button className="mob-btn" onClick={() => setIsOpen(!isOpen)} style={{
+            background: 'transparent', padding: '0.4rem', border: 'none',
+            display: 'none', color: 'var(--text-main)', cursor: 'pointer',
+          }}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </motion.nav>
 
       {/* Mobile overlay */}

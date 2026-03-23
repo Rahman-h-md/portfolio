@@ -10,7 +10,6 @@ import Contact from './components/Contact';
 import Resume from './components/Resume';
 import Skills from './components/Skills';
 import ScrollProgress from './components/ScrollProgress';
-import FloatingControls from './components/FloatingControls';
 import CustomCursor from './components/CustomCursor';
 
 function App() {
@@ -47,17 +46,16 @@ function App() {
       <CustomCursor />
       <ScrollProgress />
       <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
-      <FloatingControls />
       <main style={{ paddingTop: '80px' }}>
-         <Hero setActiveSection={setActiveSection} />
-         <About />
-         <Resume />
-         <Skills />
-         <Projects />
-         <Certifications />
-         <Achievements />
-         <Experience />
-         <Contact />
+        <Hero setActiveSection={setActiveSection} />
+        <About />
+        <Resume />
+        <Skills />
+        <Projects />
+        <Certifications />
+        <Achievements />
+        <Experience />
+        <Contact />
       </main>
     </div>
   );

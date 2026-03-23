@@ -5,7 +5,7 @@ import { portfolioData } from '../data/portfolio';
 
 const Resume = () => {
   const [activeTab, setActiveTab] = useState('Education');
-  
+
   const tabs = ['Education', 'Skills', 'Projects', 'Extracurricular', 'Certificates'];
 
   const personal = portfolioData.personal;
@@ -93,7 +93,7 @@ const Resume = () => {
       background: 'var(--bg-main)'
     }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-        
+
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
@@ -116,8 +116,16 @@ const Resume = () => {
             marginBottom: '2rem'
           }}
         >
-          <ContactPill icon={<Mail size={16} />} text={personal.email} />
-          <ContactPill icon={<Phone size={16} />} text="+91-8278478622" />
+          <ContactPill 
+            icon={<Mail size={16} />} 
+            text={personal.email} 
+            link={personal.email.includes('@gmail.com') ? `https://mail.google.com/mail/?view=cm&fs=1&to=${personal.email}` : `mailto:${personal.email}`}
+          />
+          <ContactPill 
+            icon={<Phone size={16} />} 
+            text="+91-9835385670" 
+            link="tel:+919835385670"
+          />
           <ContactPill icon={<Linkedin size={16} />} text="LinkedIn" link={personal.linkedin} />
           <ContactPill icon={<Github size={16} />} text="GitHub" link={personal.github} />
         </motion.div>

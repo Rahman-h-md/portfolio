@@ -1,6 +1,33 @@
 import React, { useState, useRef } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const AudioWaveIcon = ({ isPlaying }) => {
+  const bars = [
+    { base: 4, peak: 10 },
+    { base: 6, peak: 16 },
+    { base: 8, peak: 20 },
+    { base: 6, peak: 16 },
+    { base: 4, peak: 10 },
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: '3px', alignItems: 'center', justifyContent: 'center', height: '24px' }}>
+      {bars.map((bar, i) => (
+        <motion.div
+          key={i}
+          animate={{ height: isPlaying ? [bar.base, bar.peak, bar.base] : bar.base }}
+          transition={{
+            duration: 0.8,
+            repeat: isPlaying ? Infinity : 0,
+            ease: "easeInOut",
+            delay: i * 0.1,
+          }}
+          style={{ width: '3px', backgroundColor: 'currentColor', borderRadius: '2px' }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const FloatingControls = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -62,7 +89,7 @@ const FloatingControls = () => {
           padding: 0
         }}
       >
-        {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
+        <AudioWaveIcon isPlaying={isPlaying} />
       </motion.button>
     </div>
   );
