@@ -1,1 +1,40 @@
-node_modules
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Build artifacts
+/build
+/dist
+/out
+/docs
+/.vitepress/cache
+# order of above list matters for not ignoring /docs/public/build
+/.nuxt
+.vite-inspect
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm/*.log
+.yarn-integrity
+.yarn-state.yml
+
+# OS and Editor files
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.user
+*.casc
+*.sdf
+*.jscsrc
