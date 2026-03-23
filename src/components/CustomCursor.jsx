@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
+  // Motion values bypass React renders for ZERO-latency native feel
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  
+  // Spring config for the outer aesthetic ring
+  // Tuning for extremely rapid, snappy, non-laggy response
+  const springConfig = { damping: 28, stiffness: 700, mass: 0.1 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+
   useEffect(() => {
-    const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
 
     const handleMouseOver = (e) => {
@@ -26,47 +36,27 @@ const CustomCursor = () => {
       }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', moveCursor, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, []);
-
-  // Use state strictly for variants to avoid jumping on fast re-renders
-  const variants = {
-    default: {
-      x: mousePosition.x - 16, // center the 32x32 container
-      y: mousePosition.y - 16,
-      scale: 1,
-      opacity: 0.5,
-      mixBlendMode: 'difference'
-    },
-    hover: {
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
-      scale: 2.5,
-      opacity: 1,
-      mixBlendMode: 'screen',
-      backgroundColor: 'rgba(59, 130, 246, 0.2)'
-    }
-  };
+  }, [cursorX, cursorY]);
 
   return (
     <>
       {/* Outer Glow Follower */}
       <motion.div
         className="custom-cursor-follower"
-        variants={variants}
-        animate={isHovering ? "hover" : "default"}
-        transition={{ 
-          type: "spring", 
-          stiffness: 150, 
-          damping: 15, 
-          mass: 0.5 
+        animate={{
+          scale: isHovering ? 2.5 : 1,
+          opacity: isHovering ? 1 : 0.5,
+          backgroundColor: isHovering ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
+          mixBlendMode: isHovering ? 'screen' : 'difference'
         }}
+        transition={{ scale: { type: 'spring', stiffness: 400, damping: 25 } }}
         style={{
           position: 'fixed',
           top: 0,
@@ -77,34 +67,49 @@ const CustomCursor = () => {
           border: '1px solid var(--accent-blue)',
           pointerEvents: 'none',
           zIndex: 9999,
+          // Use spring for highly snappy follow trailing
+          x: cursorXSpring,
+          y: cursorYSpring,
+          translateX: '-50%',
+          translateY: '-50%',
           willChange: 'transform'
         }}
       />
-      {/* Exact center dot */}
-      <div 
+      {/* Exact center dot - literally 0 latency */}
+      <motion.div 
         style={{
           position: 'fixed',
-          top: mousePosition.y,
-          left: mousePosition.x,
+          top: 0,
+          left: 0,
           width: '6px',
           height: '6px',
-          backgroundColor: 'var(--text-main)',
+          backgroundColor: '#fff',
           borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
           pointerEvents: 'none',
           zIndex: 10000,
-          transition: 'transform 0.1s ease-out, opacity 0.2s',
-          opacity: isHovering ? 0 : 1 // Hide dot when hovering
+          // Exactly follow raw motion values bypassing spring for identical to hardware cursor speed
+          x: cursorX,
+          y: cursorY,
+          translateX: '-50%',
+          translateY: '-50%',
+          opacity: isHovering ? 0 : 1,
+          willChange: 'transform'
         }}
+        transition={{ opacity: { duration: 0.15 } }}
       />
 
       <style>{`
+        /* Replace default OS structural cursors with ours */
+        body, a, button, [role="button"], input, select, textarea {
+          cursor: none !important;
+        }
+
         /* Hide cursor on touch devices entirely */
         @media (pointer: coarse) {
           .custom-cursor-follower, div[style*="zIndex: 10000"] {
             display: none !important;
           }
-          * { cursor: auto !important; }
+          body, * { cursor: auto !important; }
         }
       `}</style>
     </>

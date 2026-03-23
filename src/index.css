@@ -47,6 +47,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+[data-theme='light'] {
+  --root-bg: #f8fafc;
+  --surface-1: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-3: #e2e8f0;
+  
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-subtle: #94a3b8;
+
+  --neon-blue: #8b5cf6;
+  --neon-blue-dim: #7c3aed;
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(139, 92, 246, 0.25);
+  --glass-highlight: rgba(139, 92, 246, 0.1);
+  
+  --glow-blue: rgba(139, 92, 246, 0.2);
+  --glow-blue-strong: rgba(139, 92, 246, 0.4);
+
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+  --gradient-text-blue: linear-gradient(90deg, #1e293b 0%, #8b5cf6 100%);
+  --gradient-text-accent: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--root-bg); }

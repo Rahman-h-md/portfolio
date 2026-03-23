@@ -29,7 +29,13 @@ const Navbar = ({ activeSection, setActiveSection }) => {
     e.preventDefault();
     setActiveSection(id);
     setIsOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Smooth scroll directly to the section on the page
+    const element = document.getElementById(id);
+    if (element) {
+      const yStr = element.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: yStr, behavior: 'smooth' });
+    }
   };
 
   return (

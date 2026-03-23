@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowRight, Code2, Terminal, Braces, Cpu } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
-
+import Hero3D from './Hero3D';
 
 
 /* Floating tech icon node for the right-column visual */
@@ -60,48 +60,7 @@ const Hero = ({ setActiveSection }) => {
 
 
       {/* ── Decorative animated background ── */}
-
-      {/* Slow-spin outer ring */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-        style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '900px', height: '900px',
-          borderRadius: '50%',
-          border: '1px dashed rgba(0,212,255,0.10)',
-          pointerEvents: 'none', zIndex: 0,
-        }}
-      />
-      {/* Counter-spin middle ring */}
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '650px', height: '650px',
-          borderRadius: '50%',
-          border: '1px dashed rgba(168,85,247,0.12)',
-          pointerEvents: 'none', zIndex: 0,
-        }}
-      />
-      {/* Inner pulsing ring */}
-      <motion.div
-        animate={{ scale: [1, 1.04, 1], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '420px', height: '420px',
-          borderRadius: '50%',
-          border: '1px solid rgba(0,212,255,0.08)',
-          pointerEvents: 'none', zIndex: 0,
-        }}
-      />
-
-
+      <Hero3D />
 
       {/* Subtle grid overlay */}
       <div style={{
@@ -231,10 +190,18 @@ const Hero = ({ setActiveSection }) => {
             custom={3} variants={textVariants} initial="hidden" animate="visible"
             style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}
           >
-            <a href="#projects" className="btn-neon" onClick={(e) => { e.preventDefault(); setActiveSection('projects'); }}>
+            <a href="#projects" className="btn-neon" onClick={(e) => { 
+                e.preventDefault(); 
+                const el = document.getElementById('projects');
+                if(el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+              }}>
               View My Work <ArrowRight size={18} />
             </a>
-            <button className="btn-outline" onClick={() => setActiveSection('contact')} style={{ background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1.15rem' }}>
+            <button className="btn-outline" onClick={() => { 
+                const el = document.getElementById('contact');
+                if(el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+              }} 
+              style={{ background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1.15rem' }}>
               <Mail size={18} /> Let's Talk
             </button>
           </motion.div>

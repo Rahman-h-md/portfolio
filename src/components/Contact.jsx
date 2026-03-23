@@ -18,21 +18,29 @@ const Contact = () => {
     e.preventDefault();
     setStatus({ state: 'loading', msg: '' });
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch(`https://formsubmit.co/ajax/${personal.email}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+            _subject: `New Contact Form Submission from ${formData.name}`
+        })
       });
       const data = await res.json();
-      if (data.success) {
-        setStatus({ state: 'success', msg: data.msg });
+      if (data.success === "true") {
+        setStatus({ state: 'success', msg: 'Message sent successfully!' });
         setFormData({ name: '', email: '', message: '' }); // reset form
       } else {
-        setStatus({ state: 'error', msg: data.msg || 'Something went wrong.' });
+        setStatus({ state: 'error', msg: data.message || 'Something went wrong.' });
       }
     } catch (err) {
       console.error(err);
-      setStatus({ state: 'error', msg: 'Unable to connect to server. Is the backend running?' });
+      setStatus({ state: 'error', msg: 'Unable to send message. Please try again later.' });
     }
   };
 
@@ -41,7 +49,9 @@ const Contact = () => {
       icon: <Mail size={16} />,
       label: 'Email',
       value: personal.email,
-      href: `mailto:${personal.email}`
+      href: personal.email.includes('@gmail.com') 
+        ? `https://mail.google.com/mail/?view=cm&fs=1&to=${personal.email}`
+        : `mailto:${personal.email}`
     },
     {
       icon: <Phone size={16} />,
@@ -245,20 +255,22 @@ const Contact = () => {
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', flexGrow: 1 }}>
-              {contactLinks.map((link, idx) => (
-                <a
-                  key={idx}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '1rem',
-                    textDecoration: 'none', transition: 'transform 0.2s'
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'translateX(5px)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'translateX(0)'}
-                >
-                  <div style={{
+              {contactLinks.map((link, idx) => {
+                const isExternal = link.href.startsWith('http');
+                return (
+                  <a
+                    key={idx}
+                    href={link.href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noreferrer" : undefined}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '1rem',
+                      textDecoration: 'none', transition: 'transform 0.2s'
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'translateX(5px)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'translateX(0)'}
+                  >
+                    <div style={{
                     width: '36px', height: '36px', borderRadius: '6px',
                     background: 'rgba(88, 86, 214, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'var(--neon-purple)', flexShrink: 0
@@ -275,7 +287,8 @@ const Contact = () => {
                     </p>
                   </div>
                 </a>
-              ))}
+              );
+              })}
             </div>
 
             {/* Follow Me Block */}
