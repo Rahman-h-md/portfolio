@@ -1,22 +1,20 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Stars, MeshDistortMaterial, Sphere, Box, Icosahedron } from '@react-three/drei';
+import { Float, MeshDistortMaterial, Sphere, Icosahedron } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Scattered floating objects across the entire screen
 const ScatteredShapes = ({ count = 6 }) => {
   const shapes = useMemo(() => {
     return new Array(count).fill().map((_, i) => {
-      // Random positions across a wide field (-15 to 15)
       const x = (Math.random() - 0.5) * 30;
       const y = (Math.random() - 0.5) * 20;
-      const z = (Math.random() - 0.5) * 15 - 5; // Push slightly back so they don't clip camera heavily
+      const z = (Math.random() - 0.5) * 15 - 5; 
       
       const scale = 0.5 + Math.random() * 1.5;
       const speed = 0.2 + Math.random() * 0.8;
-      const type = Math.floor(Math.random() * 3); // 0: box, 1: sphere, 2: icosahedron
+      const type = Math.floor(Math.random() * 3); 
       
-      // Select random vibrant colors matching the theme
       const colors = ['#a855f7', '#00d4ff', '#ec4899', '#10b981'];
       const color = colors[Math.floor(Math.random() * colors.length)];
       
@@ -62,6 +60,47 @@ const ScatteredShapes = ({ count = 6 }) => {
   );
 };
 
+const SmokyBackground = () => {
+  return (
+    <>
+      {/* Massive undulating spheres to create a premium, abstract smoky/fog effect */}
+      <Sphere args={[1, 64, 64]} scale={18} position={[-8, 8, -20]}>
+        <MeshDistortMaterial
+          color="#a855f7"
+          attach="material"
+          distort={0.6}
+          speed={0.6}
+          roughness={0.8}
+          transparent
+          opacity={0.2}
+        />
+      </Sphere>
+      <Sphere args={[1, 64, 64]} scale={22} position={[8, -6, -25]}>
+        <MeshDistortMaterial
+          color="#00d4ff"
+          attach="material"
+          distort={0.7}
+          speed={0.4}
+          roughness={0.8}
+          transparent
+          opacity={0.15}
+        />
+      </Sphere>
+      <Sphere args={[1, 64, 64]} scale={16} position={[0, -10, -18]}>
+        <MeshDistortMaterial
+          color="#ec4899"
+          attach="material"
+          distort={0.5}
+          speed={0.5}
+          roughness={0.8}
+          transparent
+          opacity={0.15}
+        />
+      </Sphere>
+    </>
+  );
+};
+
 const Hero3D = () => {
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.85 }}>
@@ -71,8 +110,7 @@ const Hero3D = () => {
         <pointLight position={[-10, -10, -10]} intensity={2} color="#ec4899" />
         <pointLight position={[10, -10, 10]} intensity={2} color="#00d4ff" />
         
-        {/* Subtle background stars spread infinitely */}
-        <Stars radius={150} depth={50} count={3000} factor={4} saturation={0} fade speed={0.5} />
+        <SmokyBackground />
         
         {/* Far fewer, minimal shapes */}
         <ScatteredShapes count={6} />
