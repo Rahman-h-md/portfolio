@@ -18,25 +18,33 @@ const Contact = () => {
     e.preventDefault();
     setStatus({ state: 'loading', msg: '' });
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${personal.email}`, {
+      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
         method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+        headers: {
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          service_id: 'service_hdxfd05',
+          template_id: 'template_ox2dwkd',
+          user_id: 'Kh5LsMfBDP32zibAQ',
+          template_params: {
+            // We pass duplicates to cover the most common default template variable names
             name: formData.name,
+            from_name: formData.name,
             email: formData.email,
+            reply_to: formData.email,
             message: formData.message,
-            _subject: `New Contact Form Submission from ${formData.name}`
+          }
         })
       });
-      const data = await res.json();
-      if (data.success === "true") {
+
+      // EmailJS responds with 'OK' text on success, not JSON
+      if (res.ok) {
         setStatus({ state: 'success', msg: 'Message sent successfully!' });
         setFormData({ name: '', email: '', message: '' }); // reset form
       } else {
-        setStatus({ state: 'error', msg: data.message || 'Something went wrong.' });
+        const errorText = await res.text();
+        setStatus({ state: 'error', msg: errorText || 'Something went wrong.' });
       }
     } catch (err) {
       console.error(err);
@@ -49,7 +57,7 @@ const Contact = () => {
       icon: <Mail size={16} />,
       label: 'Email',
       value: personal.email,
-      href: personal.email.includes('@gmail.com') 
+      href: personal.email.includes('@gmail.com')
         ? `https://mail.google.com/mail/?view=cm&fs=1&to=${personal.email}`
         : `mailto:${personal.email}`
     },
@@ -216,8 +224,8 @@ const Contact = () => {
                   transition: 'opacity 0.3s ease', fontFamily: 'inherit',
                   opacity: status.state === 'loading' ? 0.7 : 1
                 }}
-                onMouseEnter={e => { if(status.state !== 'loading') e.currentTarget.style.opacity = 0.9 }}
-                onMouseLeave={e => { if(status.state !== 'loading') e.currentTarget.style.opacity = 1 }}
+                onMouseEnter={e => { if (status.state !== 'loading') e.currentTarget.style.opacity = 0.9 }}
+                onMouseLeave={e => { if (status.state !== 'loading') e.currentTarget.style.opacity = 1 }}
               >
                 {status.state === 'loading' ? 'Sending...' : 'Send Message'}
               </button>
@@ -271,23 +279,23 @@ const Contact = () => {
                     onMouseLeave={e => e.currentTarget.style.transform = 'translateX(0)'}
                   >
                     <div style={{
-                    width: '36px', height: '36px', borderRadius: '6px',
-                    background: 'rgba(88, 86, 214, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--neon-purple)', flexShrink: 0
-                  }}>
-                    {link.icon}
-                  </div>
-                  <div style={{ overflow: 'hidden' }}>
-                    <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '0.1rem' }}>{link.label}</p>
-                    <p style={{
-                      fontSize: '1rem', color: 'var(--neon-blue)', fontWeight: 500,
-                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+                      width: '36px', height: '36px', borderRadius: '6px',
+                      background: 'rgba(88, 86, 214, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      color: 'var(--neon-purple)', flexShrink: 0
                     }}>
-                      {link.value}
-                    </p>
-                  </div>
-                </a>
-              );
+                      {link.icon}
+                    </div>
+                    <div style={{ overflow: 'hidden' }}>
+                      <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '0.1rem' }}>{link.label}</p>
+                      <p style={{
+                        fontSize: '1rem', color: 'var(--neon-blue)', fontWeight: 500,
+                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+                      }}>
+                        {link.value}
+                      </p>
+                    </div>
+                  </a>
+                );
               })}
             </div>
 
