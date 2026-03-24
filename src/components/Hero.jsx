@@ -229,6 +229,7 @@ const Hero = ({ setActiveSection }) => {
           >
             {/* Outer glow ring */}
             <motion.div
+              className="hero-ring"
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
               style={{
@@ -244,6 +245,7 @@ const Hero = ({ setActiveSection }) => {
             />
             {/* Third ring — clockwise, teal accent */}
             <motion.div
+              className="hero-ring"
               animate={{ rotate: -360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               style={{
@@ -260,6 +262,7 @@ const Hero = ({ setActiveSection }) => {
 
             {/* Photo frame */}
             <motion.div
+              className="hero-photo-frame"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               style={{
@@ -312,6 +315,7 @@ const Hero = ({ setActiveSection }) => {
                 alignItems: 'center',
                 gap: '0.6rem',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                zIndex: 10,
               }}
             >
               <span style={{
@@ -342,6 +346,7 @@ const Hero = ({ setActiveSection }) => {
                 borderRadius: '14px',
                 padding: '0.75rem 1.25rem',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                zIndex: 10,
               }}
             >
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.2 }}>Specialization</p>
@@ -349,14 +354,17 @@ const Hero = ({ setActiveSection }) => {
             </motion.div>
 
             {/* Background glow */}
-            <div style={{
-              position: 'absolute',
-              width: '300px', height: '300px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%)',
-              filter: 'blur(40px)',
-              zIndex: -1,
-            }} />
+            <div 
+              className="hero-glow-bg"
+              style={{
+                position: 'absolute',
+                width: '300px', height: '300px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%)',
+                filter: 'blur(40px)',
+                zIndex: -1,
+              }} 
+            />
           </motion.div>
         </div>
 
@@ -366,9 +374,20 @@ const Hero = ({ setActiveSection }) => {
           50% { opacity: 0.4; }
         }
         @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-visual { display: none !important; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
           .hero-social-sidebar { display: none !important; }
+          
+          /* Preserve perfect circular geometry & desktop aspect ratios by uniformly scaling the visual container */
+          .hero-visual {
+            display: flex !important;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            zoom: 0.6; /* Shrinks the element and its physical layout box by 40% uniformly */
+          }
+          
+          .hero-ring, .hero-glow-bg, .hero-photo-frame {
+             display: block !important;
+          }
         }
       `}</style>
       </section>
