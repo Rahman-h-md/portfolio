@@ -80,8 +80,11 @@ const Navbar = ({ activeSection, setActiveSection }) => {
 
   return (
     <>
-      {/* Background Music Audio Element */}
-      <audio ref={audioRef} src="/lofi.mp3" loop />
+      {/* Background Music Audio Element - Features a primary full-length soothing track and a guaranteed Github fallback */}
+      <audio key="ambient-full-track" ref={audioRef} loop>
+        <source src="https://incompetech.com/music/royalty-free/mp3-royaltyfree/Deliberate%20Thought.mp3" type="audio/mpeg" />
+        <source src="https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample.mp3" type="audio/mpeg" />
+      </audio>
 
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
