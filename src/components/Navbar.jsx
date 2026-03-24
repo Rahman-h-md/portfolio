@@ -35,28 +35,15 @@ const Navbar = ({ activeSection, setActiveSection }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const a = new Audio(`${import.meta.env.BASE_URL}lofi.mp3`);
-      a.loop = true;
-      a.preload = 'auto';
-      return a;
-    }
-    return null;
-  });
+  const audioRef = React.useRef(null);
 
   const toggleMusic = () => {
-    if (!audio) return;
+    if (!audioRef.current) return;
     if (isPlaying) {
-      audio.pause();
+      audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      // Force load on mobile devices right before playing if suspended
-      if (audio.readyState === 0) audio.load();
-      audio.play().then(() => setIsPlaying(true)).catch(e => {
-        console.error('Audio playback failed:', e);
-        alert('Playback blocked by browser: ' + e.message);
-      });
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.error(e));
     }
   };
 
@@ -93,7 +80,8 @@ const Navbar = ({ activeSection, setActiveSection }) => {
 
   return (
     <>
-      {/* Background Music handled dynamically via Audio object */}
+      {/* Background Music Audio Element */}
+      <audio ref={audioRef} src="/lofi.mp3" loop />
 
       <motion.nav
         initial={{ y: -80, opacity: 0 }}

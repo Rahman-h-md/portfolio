@@ -231,10 +231,11 @@ const Hero = ({ setActiveSection }) => {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-              className="hero-ring-1"
               style={{
                 position: 'absolute',
                 top: '50%', left: '50%',
+                width: '520px', height: '520px',
+                marginTop: '-260px', marginLeft: '-260px',
                 borderRadius: '50%',
                 border: '2px dashed rgba(0, 212, 255, 0.5)',
                 boxShadow: '0 0 18px rgba(0,212,255,0.15)',
@@ -245,10 +246,11 @@ const Hero = ({ setActiveSection }) => {
             <motion.div
               animate={{ rotate: -360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-              className="hero-ring-2"
               style={{
                 position: 'absolute',
                 top: '50%', left: '50%',
+                width: '570px', height: '570px',
+                marginTop: '-285px', marginLeft: '-285px',
                 borderRadius: '50%',
                 border: '1.5px dashed rgba(16, 185, 129, 0.35)',
                 boxShadow: '0 0 12px rgba(16,185,129,0.08)',
@@ -260,9 +262,10 @@ const Hero = ({ setActiveSection }) => {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              className="hero-photo-frame"
               style={{
                 position: 'relative',
+                width: '400px',
+                height: '500px',
                 borderRadius: '28px',
                 overflow: 'hidden',
                 border: '1px solid rgba(0, 212, 255, 0.25)',
@@ -296,13 +299,15 @@ const Hero = ({ setActiveSection }) => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 0.5 }}
-              className="hero-badge-1"
               style={{
                 position: 'absolute',
+                bottom: '30px',
+                right: '-10px',
                 background: 'rgba(2, 8, 23, 0.9)',
                 backdropFilter: 'blur(12px)',
                 border: '1px solid rgba(0, 212, 255, 0.25)',
                 borderRadius: '14px',
+                padding: '0.75rem 1.25rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.6rem',
@@ -327,18 +332,20 @@ const Hero = ({ setActiveSection }) => {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.1, duration: 0.5 }}
-              className="hero-badge-2"
               style={{
                 position: 'absolute',
+                top: '30px',
+                left: '-10px',
                 background: 'rgba(2, 8, 23, 0.9)',
                 backdropFilter: 'blur(12px)',
                 border: '1px solid rgba(0, 212, 255, 0.25)',
                 borderRadius: '14px',
+                padding: '0.75rem 1.25rem',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
               }}
             >
               <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.2 }}>Specialization</p>
-              <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--neon-blue)', margin: 0 }}>Full Stack</p>
+              <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--neon-blue)', margin: 0 }}>Full Stack Developer</p>
             </motion.div>
 
             {/* Background glow */}
@@ -358,52 +365,10 @@ const Hero = ({ setActiveSection }) => {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.4; }
         }
-        
-        /* Desktop base sizes */
-        .hero-ring-1 { width: 520px; height: 520px; margin-top: -260px; margin-left: -260px; }
-        .hero-ring-2 { width: 570px; height: 570px; margin-top: -285px; margin-left: -285px; }
-        .hero-photo-frame { width: 400px; height: 500px; }
-        .hero-badge-1 { bottom: 30px; right: -10px; padding: 0.75rem 1.25rem; }
-        .hero-badge-2 { top: 30px; left: -10px; padding: 0.75rem 1.25rem; }
-
-        @media (max-width: 992px) {
-          .hero-ring-1 { width: 420px; height: 420px; margin-top: -210px; margin-left: -210px; }
-          .hero-ring-2 { width: 460px; height: 460px; margin-top: -230px; margin-left: -230px; }
-          .hero-photo-frame { width: 320px; height: 400px; }
-        }
-
         @media (max-width: 768px) {
-          .hero-grid { 
-            grid-template-columns: 1fr !important; 
-            gap: 3rem !important; 
-            text-align: center;
-          }
-          /* Ensure text centers on mobile */
-          .hero-grid > div:first-child {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-visual { display: none !important; }
           .hero-social-sidebar { display: none !important; }
-          
-          /* Show visual but scale it for mobile */
-          .hero-visual {
-            display: flex !important;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-          }
-          .hero-ring-1 { width: 320px; height: 320px; margin-top: -160px; margin-left: -160px; border-width: 1px; }
-          .hero-ring-2 { width: 350px; height: 350px; margin-top: -175px; margin-left: -175px; border-width: 1px; }
-          .hero-photo-frame { width: 260px; height: 320px; border-radius: 20px; }
-          
-          .hero-badge-1 { 
-            bottom: -15px; right: 0; left: 0; margin: 0 auto; width: max-content;
-            padding: 0.5rem 1rem; transform: scale(0.9);
-          }
-          .hero-badge-2 { 
-            top: -25px; left: 0; right: 0; margin: 0 auto; width: max-content;
-            padding: 0.5rem 1rem; transform: scale(0.9);
-          }
         }
       `}</style>
       </section>
