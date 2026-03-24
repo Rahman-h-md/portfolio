@@ -105,7 +105,8 @@ export const portfolioData = {
       description: "Full-stack telemedicine platform with appointment scheduling, video consultations via WebRTC & Socket.IO, reducing manual coordination by 60%.",
       tech: ["MongoDB", "Express.js", "React.js", "Node.js", "WebRTC", "Socket.IO", "REST APIs", "JWT"],
       link: "https://fullstack-ca-ny6g.vercel.app/",
-      github: "https://github.com/Rahman-h-md/fullstackCA"
+      github: "https://github.com/Rahman-h-md/fullstackCA",
+      image: "/Screenshot 2026-03-23 231547.png"
     },
     {
       id: 2,
@@ -116,6 +117,38 @@ export const portfolioData = {
       tech: ["HTML5", "CSS3", "JavaScript", "Bootstrap", "PHP", "MySQL", "Three.js", "AR.js"],
       link: "#",
       github: "https://github.com/Rahman-h-md/frontendp"
+    },
+    {
+      id: 3,
+      title: "CycleTrack",
+      subtitle: "Personal Period Tracking Companion",
+      date: "Mar 2024",
+      description: "Privacy-first period tracking web app with accurate cycle predictions based on personal history, featuring secure data storage and an intuitive UI.",
+      tech: ["React.js", "CSS3", "JavaScript", "Node.js", "MongoDB"],
+      link: "#",
+      github: "#",
+      image: "/Screenshot 2026-03-23 231234.png"
+    },
+    {
+      id: 4,
+      title: "Developer Portfolio",
+      subtitle: "Interactive Full-Stack Portfolio Website",
+      date: "Mar 2026",
+      description: "Modern personal portfolio with 3D hero section, AI chatbot, contact form backend, animated sections, and dark glassmorphism design.",
+      tech: ["React.js", "Framer Motion", "Three.js", "Node.js", "MongoDB", "Express.js"],
+      link: "#",
+      github: "https://github.com/Rahman-h-md/portfolio",
+      image: "/Screenshot 2026-03-24 010258.png"
+    },
+    {
+      id: 5,
+      title: "Sudoku Solver",
+      subtitle: "DSA-Powered Puzzle Solver",
+      date: "Jul 2024",
+      description: "Interactive Sudoku solver using backtracking algorithm with step-by-step visualization, developed as part of GeeksForGeeks DSA training.",
+      tech: ["C++", "DSA", "Backtracking", "Algorithm"],
+      link: "#",
+      github: "#"
     }
   ],
   certifications: [

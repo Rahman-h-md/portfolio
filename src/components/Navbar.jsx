@@ -81,7 +81,7 @@ const Navbar = ({ activeSection, setActiveSection }) => {
   return (
     <>
       {/* Background Music Audio Element */}
-      <audio ref={audioRef} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop />
+      <audio ref={audioRef} src="/lofi.mp3" loop />
 
       <motion.nav
         initial={{ y: -80, opacity: 0 }}

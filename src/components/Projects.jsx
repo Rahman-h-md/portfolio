@@ -89,6 +89,49 @@ const Projects = () => {
               </div>
             </div>
 
+            {/* Project image preview */}
+            <div style={{
+              width: '100%',
+              height: '190px',
+              overflow: 'hidden',
+              position: 'relative',
+              borderBottom: '1px solid var(--glass-border)',
+              flexShrink: 0,
+            }}>
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'top',
+                    display: 'block',
+                    transition: 'transform 0.5s ease',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+                />
+              ) : (
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(192,132,252,0.08) 50%, rgba(236,72,153,0.08) 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                }}>
+                  <Terminal size={32} style={{ color: 'rgba(0,212,255,0.3)' }} />
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)', fontFamily: 'monospace', opacity: 0.6 }}>
+                    {project.title}
+                  </span>
+                </div>
+              )}
+            </div>
+
             <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
