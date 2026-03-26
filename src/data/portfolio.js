@@ -229,19 +229,10 @@ export const portfolioData = {
   achievements: [
     {
       id: 1,
-      title: "Best Innovation Award",
-      organization: "Tech Symposium 2025",
-      date: "March 2025",
-      description: "Awarded 1st place for developing an AI-driven accessibility tool that helps visually impaired users navigate complex web interfaces.",
-      icon: "trophy",
-      link: "#"
-    },
-    {
-      id: 2,
-      title: "Top Performer — Coding Sprint",
-      organization: "Global Dev Challenge",
-      date: "November 2024",
-      description: "Ranked in the top 5% out of 10,000+ participants in a 48-hour intense algorithm and data structures coding sprint.",
+      title: "Solved DSA Questions",
+      organization: "LeetCode",
+      date: "Present",
+      description: "Continuously enhancing problem-solving and algorithmic skills by consistently solving complex Data Structures and Algorithms challenges.",
       icon: "star",
       link: "#"
     },
