@@ -10,7 +10,7 @@ export const portfolioData = {
     github: "https://github.com/Rahman-h-md",
     linkedin: "https://www.linkedin.com/in/hasiburahman04",
     resumeUrl: "/CV-rahman-12322817.pdf",
-    profileImage: "/portfolioProfile.jpg",
+    profileImage: "/WhatsApp Image 2026-03-27 at 11.18.37 AM.jpeg",
     aboutPage: {
       quickFacts: [
         { icon: "📍", label: "Location", value: "Bihar, India" },
